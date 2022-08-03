@@ -8,13 +8,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.FlightBookingService.UserServicev1.Models.Userobject;
 import com.FlightBookingService.UserServicev1.Repository.UserInterface;
 
 @RestController
+@RequestMapping("/api/version1/")
 public class UserController {
 	
 	@Autowired
@@ -28,7 +31,7 @@ public class UserController {
 	@PostMapping(path = "/user")
     public String addUser(@RequestBody Userobject user){
         userinterface.insert(user);
-        return String.format("Added product: %s",user.getId());
+        return String.format("Added user: %s",user.getName());
     }
 	//For specific notation
 	 @GetMapping(path = "/user/{userid}")
@@ -36,10 +39,16 @@ public class UserController {
 	        return userinterface.findById(userid);
 	    }
 
+	 @PutMapping(path = "/user/{userid}")
+	 public String updateUserList(@PathVariable String userid,@RequestBody Userobject object) {
+	      object.setId(userid);
+	      userinterface.save(object);
+		  return String.format("Updated user:%s", object.getName());                                            
+	 }
 	    @DeleteMapping(path = "/user/{userid}")
 	    public String deleteUser(@PathVariable String userid){
 	        userinterface.deleteById(userid);
-	        return String.format("deleted product: %s",userid);
+	        return String.format("deleted Users: %s",userid);
 	    }
 
 
